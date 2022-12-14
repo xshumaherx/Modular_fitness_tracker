@@ -10,11 +10,11 @@ class InfoMessage:
     distance: float
     speed: float
     calories: float
-    message: list = ('Тип тренировки: {training_type}; '
-                     'Длительность: {duration:.3f} ч.; '
-                     'Дистанция: {distance:.3f} км; '
-                     'Ср. скорость: {speed:.3f} км/ч; '
-                     'Потрачено ккал: {calories:.3f}.')
+    message: str = ('Тип тренировки: {training_type}; '
+                    'Длительность: {duration:.3f} ч.; '
+                    'Дистанция: {distance:.3f} км; '
+                    'Ср. скорость: {speed:.3f} км/ч; '
+                    'Потрачено ккал: {calories:.3f}.')
 
     def get_message(self) -> str:
         return self.message.format(**asdict(self))
@@ -63,7 +63,7 @@ class Running(Training):
 
     def get_spent_calories(self) -> float:
         return ((self.CALORIES_MEAN_SPEED_MULTIPLIER
-                * super().get_mean_speed() + self.CALORIES_MEAN_SPEED_SHIFT)
+                * self.get_mean_speed() + self.CALORIES_MEAN_SPEED_SHIFT)
                 * self.weight / self.M_IN_KM * self.duration * self.MIN_IN_H)
 
 
@@ -109,7 +109,7 @@ class Swimming(Training):
     def get_mean_speed(self) -> float:
         return (self.length_pool
                 * self.count_pool
-                / super().M_IN_KM
+                / self.M_IN_KM
                 / self.duration)
 
     def get_spent_calories(self) -> float:
